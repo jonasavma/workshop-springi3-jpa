@@ -1,17 +1,21 @@
 package br.com.educandoweb.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.criteria.Order;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {
+public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,11 +27,14 @@ public class User implements Serializable {
 	private String phone;
 	private String password;
 
-	public User() {
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
+
+	public Cliente() {
 
 	}
 
-	public User(Long id, String name, String email, String phone, String password) {
+	public Cliente(Long id, String name, String email, String phone, String password) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -89,13 +96,17 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Cliente other = (Cliente) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", phone=" + phone + ", password=" + password + ", email=" + email
+		return "Cliente [id=" + id + ", name=" + name + ", phone=" + phone + ", password=" + password + ", email=" + email
 				+ "]";
 	}
 
