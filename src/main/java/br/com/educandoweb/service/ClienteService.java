@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.educandoweb.entities.Cliente;
-import br.com.educandoweb.repositories.UserRepository;
+import br.com.educandoweb.repositories.ClienteRepository;
 
 @Service
-public class UserService {
+public class ClienteService {
 
 	@Autowired
-	private UserRepository repository;
+	private ClienteRepository repository;
 
 	public List<Cliente> findAll() {
 		return repository.findAll();

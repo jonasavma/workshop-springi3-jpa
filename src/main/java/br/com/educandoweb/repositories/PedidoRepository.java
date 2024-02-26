@@ -2,9 +2,9 @@ package br.com.educandoweb.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.educandoweb.entities.Cliente;
+import br.com.educandoweb.entities.Pedido;
 
-public interface UserRepository extends JpaRepository<Cliente, Long> {
+public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 	
 	
 	
