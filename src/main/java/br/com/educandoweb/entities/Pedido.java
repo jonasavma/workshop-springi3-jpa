@@ -5,8 +5,8 @@ import java.time.Instant;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
+import br.com.educandoweb.entities.enuns.PedidoStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,8 +25,10 @@ public class Pedido implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "GMT")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
+
+	private Integer pedidoStatus;
 
 	@ManyToOne
 	@JoinColumn(name = "client_id")
@@ -36,10 +38,13 @@ public class Pedido implements Serializable {
 
 	}
 
-	public Pedido(Long id, Instant moment, Cliente cliente) {
+	public Pedido(Long id, Instant moment, PedidoStatus pedidoStatus, Cliente cliente) {
+		super();
 		this.id = id;
 		this.moment = moment;
 		this.cliente = cliente;
+		// agora alterando no construtor
+		setPedidoStatus(pedidoStatus);
 	}
 
 	public Long getId() {
@@ -64,6 +69,18 @@ public class Pedido implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	// nesse caso temos que converter par pedidosStatus
+	public PedidoStatus getPedidoStatus() {
+		return PedidoStatus.valueOf(pedidoStatus);
+	}
+
+	// agora o proceso inverso recebe pedidoStatus e guardar um numero inteiro
+	public void setPedidoStatus(PedidoStatus pedidoStatus) {
+		if (pedidoStatus != null) {
+			this.pedidoStatus = pedidoStatus.getCodigo();
+		}
 	}
 
 	@Override
