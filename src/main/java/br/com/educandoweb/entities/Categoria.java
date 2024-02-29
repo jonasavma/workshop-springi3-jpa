@@ -1,13 +1,16 @@
 package br.com.educandoweb.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_categoria")
@@ -20,13 +23,13 @@ public class Categoria implements Serializable {
 	private Long id;
 	
 	private String nome;
+	@Transient
+	private Set<Produto> produtos= new HashSet<>();
 
+	
 	public Categoria() {
 
 	}
-	
-	
-
 
 	public Categoria(Long id, String nome) {
 		super();
@@ -58,6 +61,10 @@ public class Categoria implements Serializable {
 		this.nome = nome;
 	}
 
+	public Set<Produto> getProdutos() {
+		return produtos;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -79,5 +86,7 @@ public class Categoria implements Serializable {
 	public String toString() {
 		return "Categoria [id=" + id + "]";
 	}
+
+
 
 }
