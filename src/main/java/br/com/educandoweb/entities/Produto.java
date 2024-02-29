@@ -5,36 +5,37 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.hibernate.annotations.ManyToAny;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_produto")
 public class Produto implements Serializable {
-	
 
 	private static final long serialVersionUID = -5674283448481956457L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id ;
-	
+	private Long id;
+
 	private String nome;
 	private String descricao;
 	private Double preco;
 	private String imgUrl;
-	
-	@Transient
-	private Set<Categoria> categorias= new HashSet<>();
-	
-	
+
+	@ManyToAny()
+	@JoinTable(name = "tb_produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+	private Set<Categoria> categorias = new HashSet<>();
+
 	public Produto() {
 	}
-
 
 	public Produto(Long id, String nome, String descricao, Double preco, String imgUrl) {
 		super();
@@ -43,75 +44,61 @@ public class Produto implements Serializable {
 		this.descricao = descricao;
 		this.preco = preco;
 		this.imgUrl = imgUrl;
-		
-	}
 
+	}
 
 	public Long getId() {
 		return id;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public String getNome() {
 		return nome;
 	}
 
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
 
 	public String getDescricao() {
 		return descricao;
 	}
 
-
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
 
 	public Double getPreco() {
 		return preco;
 	}
 
-
 	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
-
 
 	public String getImgUrl() {
 		return imgUrl;
 	}
 
-
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-
 
 	public Set<Categoria> getCategorias() {
 		return categorias;
 	}
 
-
 	public void setCategorias(Set<Categoria> categorias) {
 		this.categorias = categorias;
 	}
-
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(categorias, descricao, id, imgUrl, nome, preco);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -127,17 +114,9 @@ public class Produto implements Serializable {
 				&& Objects.equals(nome, other.nome) && Objects.equals(preco, other.preco);
 	}
 
-
 	@Override
 	public String toString() {
 		return "Produto [id=" + id + "]";
 	}
-	
-	
 
-
-	
-
-	
-	
 }
