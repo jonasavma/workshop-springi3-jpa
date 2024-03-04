@@ -3,6 +3,8 @@ package br.com.educandoweb.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.educandoweb.entities.pk.PedidoItemPK;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -32,10 +34,12 @@ public class PedidoItem implements Serializable {
 		this.preco = preco;
 	}
 
+	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
 
+	
 	public Produto getProduto() {
 		return id.getProduto();
 	}
