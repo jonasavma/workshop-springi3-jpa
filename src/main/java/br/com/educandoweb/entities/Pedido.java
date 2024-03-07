@@ -7,12 +7,14 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.educandoweb.entities.enuns.PedidoStatus;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,6 +36,9 @@ public class Pedido implements Serializable {
 	@JoinColumn(name = "client_id")
 	private Cliente cliente;
 
+	@OneToOne(mappedBy = "pedido",cascade = CascadeType.ALL)
+	private Pagamento pagamento;
+	
 	public Pedido() {
 
 	}
@@ -74,6 +79,16 @@ public class Pedido implements Serializable {
 	// nesse caso temos que converter par pedidosStatus
 	public PedidoStatus getPedidoStatus() {
 		return PedidoStatus.valueOf(pedidoStatus);
+	}
+	
+	
+
+	public Pagamento getPagamento() {
+		return pagamento;
+	}
+
+	public void setPagamento(Pagamento pagamento) {
+		this.pagamento = pagamento;
 	}
 
 	// agora o proceso inverso recebe pedidoStatus e guardar um numero inteiro
