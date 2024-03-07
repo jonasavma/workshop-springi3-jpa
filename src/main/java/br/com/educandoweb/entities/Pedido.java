@@ -2,7 +2,9 @@ package br.com.educandoweb.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -14,11 +16,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_order")
+@Table(name = "tb_pedido")
 public class Pedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -35,10 +38,13 @@ public class Pedido implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Cliente cliente;
-
-	@OneToOne(mappedBy = "pedido",cascade = CascadeType.ALL)
-	private Pagamento pagamento;
 	
+	@OneToMany( mappedBy = "id.pedido")
+	private Set<PedidoItem> items = new HashSet<>();
+
+	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
+	private Pagamento pagamento;
+
 	public Pedido() {
 
 	}
@@ -80,8 +86,6 @@ public class Pedido implements Serializable {
 	public PedidoStatus getPedidoStatus() {
 		return PedidoStatus.valueOf(pedidoStatus);
 	}
-	
-	
 
 	public Pagamento getPagamento() {
 		return pagamento;
@@ -96,6 +100,19 @@ public class Pedido implements Serializable {
 		if (pedidoStatus != null) {
 			this.pedidoStatus = pedidoStatus.getCodigo();
 		}
+	}
+	
+	public Set<PedidoItem> getItems(){
+		return items;
+	}
+
+	public Double getTotal() {
+		double soma = 0.0;
+		for (PedidoItem x : items) {
+			soma = soma + x.getsubTotal();
+		}
+
+		return soma;
 	}
 
 	@Override
