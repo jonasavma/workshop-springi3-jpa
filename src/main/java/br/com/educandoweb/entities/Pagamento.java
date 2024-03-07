@@ -26,6 +26,7 @@ public class Pagamento implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private Instant momento;
 	
 	@JsonIgnore
