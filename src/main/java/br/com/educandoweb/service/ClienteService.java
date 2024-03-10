@@ -12,6 +12,7 @@ import br.com.educandoweb.entities.Cliente;
 import br.com.educandoweb.repositories.ClienteRepository;
 import br.com.educandoweb.resources.exceptions.DatabaseException;
 import br.com.educandoweb.service.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ClienteService {
@@ -45,9 +46,13 @@ public class ClienteService {
 	}
 
 	public Cliente update(Long id, Cliente obj) {
-		Cliente entity = repository.getReferenceById(id);
-		updateDate(entity, obj);
-		return repository.save(entity);
+		try {
+			Cliente entity = repository.getReferenceById(id);
+			updateDate(entity, obj);
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateDate(Cliente entity, Cliente obj) {
